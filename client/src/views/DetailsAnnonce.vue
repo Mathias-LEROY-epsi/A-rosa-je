@@ -1,0 +1,73 @@
+<template>
+  <AnnonceComponent :annonce="annonce" :plantes="plantes" />
+</template>
+
+<script>
+import AnnonceComponent from "../components/AnnonceComponent.vue";
+import axios from "axios";
+import swal from "sweetalert";
+export default {
+  name: "DetailsAnnonce",
+  components: {
+    AnnonceComponent,
+  },
+  data() {
+    return {
+      annonce: {},
+      plantes: null,
+    };
+  },
+  created: async function () {
+    await this.fetchAnnonce();
+    await this.fetchPlantes();
+  },
+  methods: {
+    fetchAnnonce: async function () {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/annonces/" + this.$route.params.id,
+          {
+            auth: {
+              username: "admin",
+              password: "password",
+            },
+          }
+        );
+        if (response.data !== null || response.data.length) {
+          this.annonce = response.data;
+        }
+      } catch (error) {
+        swal(
+          "Veuillez nous excuser...",
+          "Une erreur est survenue de notre côté",
+          "error"
+        );
+        console.log(error);
+      }
+    },
+    fetchPlantes: async function () {
+      try {
+        const response = await axios.get(this.annonce._links.plantes.href, {
+          auth: {
+            username: "admin",
+            password: "password",
+          },
+        });
+        if (
+          response.data._embedded.plantes !== null ||
+          response.data._embedded.plantes.length
+        ) {
+          this.plantes = response.data._embedded.plantes;
+        }
+      } catch (error) {
+        swal(
+          "Veuillez nous excuser...",
+          "Une erreur est survenue de notre côté",
+          "error"
+        );
+        console.error(error);
+      }
+    },
+  },
+};
+</script>
