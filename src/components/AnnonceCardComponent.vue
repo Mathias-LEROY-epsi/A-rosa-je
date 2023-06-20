@@ -1,6 +1,5 @@
 <template>
   <div class="card m-4">
-    <!-- Ne fonctionnne pas : v-bind:src="annonce.image" -->
     <img
       src="../assets/img/Fleur.png"
       class="card-img mt-4 img-fluid"
@@ -11,9 +10,9 @@
       <p class="card-text">
         {{ annonce.description }}
       </p>
-      <router-link :to="`/annonce/${id}`" class="btn goto"
-        >Voir l'annonce</router-link
-      >
+      <router-link :to="`annonces/${annonce.id}`" class="btn goto">
+        Voir l'annonce
+      </router-link>
     </div>
   </div>
 </template>
@@ -23,10 +22,13 @@ export default {
   name: "AnnonceCardComponent",
   props: {
     annonce: null,
+    annonce_id: null,
   },
   computed: {
     id() {
-      return this.annonce._links.self.href.split("/")[4];
+      console.log(this.annonce);
+      //this.annonce_id = annonce["@id"];
+      return this.annonce_id;
     },
   },
 };
@@ -35,22 +37,37 @@ export default {
 <style scoped>
 .card {
   border: var(--border-3);
-  width: 18rem;
+  width: 19rem;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
 }
 
 .card > img {
   width: 80%;
   margin: 0 auto;
 }
+
+.card-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .card .goto {
   background-color: var(--color-secondary);
-  color: var(--color-background2);
-  margin-block: 10px;
+  color: var(--color-light);
+  position: relative;
+  margin-top: auto;
+  margin-bottom: 10px;
 }
 
 .card .goto:hover,
 .card .goto:focus {
-  background-color: var(--color-secondary);
-  color: var(--color-font-light);
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
 }
 </style>

@@ -1,20 +1,29 @@
-# Étape 1 : Builder l'application Vue.js
-FROM node:lts-alpine as builder
+# Use an official Node.js runtime as the base image
+FROM node:14 AS build-stage
+
+# Set the working directory in the container
 WORKDIR /app
-COPY client/package*.json ./
+
+# Copy package.json and package-lock.json to the container
+COPY package*.json ./
+
+# Install the app dependencies
 RUN npm install
-COPY client .
+
+# Copy the entire project to the container
+COPY . .
+
+# Build the Vue.js app
 RUN npm run build
 
-# Étape 2 : Exécuter l'application sur NGINX
-FROM nginx:stable-alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Use a lightweight HTTP server to serve the built app
+FROM nginx:stable-alpine AS production-stage
 
-# Copier la configuration NGINX personnalisée et les certificats SSL
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
-RUN mkdir /etc/nginx/ssl
-COPY nginx/certificate.crt /etc/nginx/ssl/certificate.crt
-COPY nginx/private.key /etc/nginx/ssl/private.key
+# Copy the built app from the previous build stage to the Nginx web server
+COPY --from=build-stage /app/dist /usr/share/nginx/html
 
+# Expose port 80 for the Nginx web server
 EXPOSE 80
+
+# Start the Nginx web server
 CMD ["nginx", "-g", "daemon off;"]

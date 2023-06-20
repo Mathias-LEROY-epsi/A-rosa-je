@@ -3,10 +3,9 @@
 :root {
   --color-primary: #38b6ff;
   --color-secondary: #003756;
-  --color-shade1: #0086d3;
-  --color-light: #8d8d8d;
-  --color-background: #e3f5ff;
-  --color-background2: #bde8ff;
+  --color-shade: #0086d3;
+  --color-light: #e3f5ff;
+  --color-background: #bde8ff;
   --color-border: #93d9ff;
 
   --font-weight: 700;

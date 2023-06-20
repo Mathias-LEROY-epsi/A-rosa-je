@@ -6,6 +6,12 @@
 import PlanteCard from "../components/PlanteComponent.vue";
 import axios from "axios";
 import swal from "sweetalert";
+
+const url = window.location.href;
+const lastParam = url.split("/").slice(-1)[0];
+console.log(url);
+console.log(lastParam);
+
 export default {
   name: "DetailsPlante",
   components: {
@@ -13,27 +19,24 @@ export default {
   },
   data() {
     return {
-      plante: {},
+      plante: [],
     };
   },
   created: function () {
     this.fetchPlante();
   },
+  mounted: function () {
+    this.fetchPlante();
+  },
   methods: {
     fetchPlante: async function () {
       try {
-        const response = await axios.get("http://localhost:8080/plantes", {
-          auth: {
-            username: "admin",
-            password: "password",
-          },
-        });
-        if (
-          response.data._embedded.plantes !== null ||
-          response.data._embedded.plantes.length
-        ) {
-          this.plante = response.data._embedded.plantes[this.$route.params.id];
-        }
+        await axios
+          .get(`http://localhost:80/plantes/${lastParam}`)
+          .then((res) => {
+            this.plante = res.data;
+            console.log(this.plante);
+          });
       } catch (error) {
         swal(
           "Veuillez nous excuser...",

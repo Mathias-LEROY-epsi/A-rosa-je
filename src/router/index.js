@@ -5,30 +5,37 @@ import DetailsAnnonce from "../views/DetailsAnnonce.vue";
 import CreerAnnonce from "../views/CreerAnnonce.vue";
 import NotFound from "../views/NotFound.vue";
 
+// import ChatComponent from "../components/ChatComponent.vue";
+
 const routes = [
   {
     path: "/",
     name: "home",
     component: ListeAnnonces,
   },
+  // {
+  //   path: "/chat",
+  //   name: "conversation",
+  //   component: ChatComponent,
+  // },
   {
     path: "/plantes/:id",
     name: "plante",
     component: DetailsPlante,
   },
   {
-    path: "/annonce/:id",
+    path: "/annonces/:id",
     name: "annonce",
     component: DetailsAnnonce,
   },
   {
-    path: "/creer",
+    path: "/nouvelle-annonce",
     name: "creerAnnonce",
     component: CreerAnnonce,
   },
   {
-    path: "/:pathMatch(.*)*",
-    name: "Default",
+    path: "/:catchAll(.*)",
+    name: "notFound",
     component: NotFound,
   },
 ];

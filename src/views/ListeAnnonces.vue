@@ -26,13 +26,6 @@ export default {
   data() {
     return {
       annonces: [],
-      config: {
-        auth: {
-          username: "admin",
-          password: "password",
-        },
-      },
-      access_token: "YWRtaW46cGFzc3dvcmQ",
     };
   },
   created() {
@@ -41,25 +34,20 @@ export default {
   methods: {
     async fetchAnnonces() {
       try {
-        const response = await axios.get("http://localhost:8080/annonces", {
-          auth: {
-            username: "admin",
-            password: "password",
-          },
+        await axios.get("http://localhost:80/annonces?page=1").then((res) => {
+          res.data["hydra:member"].forEach((annonce) => {
+            console.log(annonce);
+            this.annonces.push(annonce);
+            console.log(this.annonces);
+          });
         });
-        if (
-          response.data._embedded.annonces !== null ||
-          response.data._embedded.annonces.length
-        ) {
-          this.annonces = response.data._embedded.annonces;
-        }
       } catch (error) {
         swal(
           "Veuillez nous excuser...",
           "Une erreur est survenue de notre côté",
           "error"
         );
-        console.error(error);
+        // console.log(error);
       }
     },
   },
@@ -69,7 +57,7 @@ export default {
 <style scoped>
 .alert-primary {
   --bs-alert-color: var(--color-secondary) !important;
-  --bs-alert-bg: var(--color-background2) !important;
+  --bs-alert-bg: var(--color-background) !important;
   --bs-alert-border-color: var(--color-border) !important;
 }
 </style>
