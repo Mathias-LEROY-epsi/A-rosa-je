@@ -1,6 +1,6 @@
 <template>
   <h1>Création d'une annonce</h1>
-  <div v-if="!data.length">
+  <div v-if="!annonce.length">
     <div class="d-flex flex-column align-items-center">
       <!-- Trouver comment revenir sur cette page sans avoir à réactualiser la page quand on a soumis le formulaire -->
       <form
@@ -15,7 +15,7 @@
             <input
               type="text"
               class="form-control"
-              v-model="annonce.titre"
+              v-model.lazy="annonce.titre"
               maxlength="90"
               placeholder="Garde d'un rosier en pot"
               required
@@ -37,9 +37,9 @@
         </div> -->
         <div class="mt-5 col-md-10">
           <span class="input-group-text">Etat de l'annonce*</span>
-          <select class="form-select" v-model="annonce.etat" required>
+          <select class="form-select" v-model.lazy="annonce.etat" required>
             <option selected disabled value="">Choisissez un état...</option>
-            <option v-for="etat in etats" :key="etat" :value="etat">
+            <option v-for="etat in etats" :key="etat">
               {{ etat }}
             </option>
           </select>
@@ -51,7 +51,7 @@
             <span class="input-group-text">Description*</span>
             <textarea
               class="form-control"
-              v-model="annonce.description"
+              v-model.lazy="annonce.description"
               rows="8"
               placeholder="A arroser 2 à 3 fois par semaine"
               required
@@ -66,7 +66,7 @@
             <input
               type="number"
               class="form-control"
-              v-model="annonce.numero"
+              v-model.lazy="annonce.numero"
               placeholder="1"
               min="1"
               max="999"
@@ -82,7 +82,7 @@
             <input
               type="text"
               class="form-control"
-              v-model="annonce.rue"
+              v-model.lazy="annonce.rue"
               maxlength="90"
               placeholder="rue de la rose"
               required
@@ -97,7 +97,7 @@
             <input
               type="number"
               class="form-control"
-              v-model="annonce.codePostal"
+              v-model.lazy="annonce.codePostal"
               v-on:change="checkCP"
               id="cp"
               placeholder="44000"
@@ -114,7 +114,7 @@
             <input
               type="text"
               class="form-control"
-              v-model="annonce.ville"
+              v-model.lazy="annonce.ville"
               maxlength="90"
               placeholder="Nantes"
               onkeydown="return /[a-z]/i.test(event.key)"
@@ -127,9 +127,9 @@
 
         <div class="mt-5 col-md-10">
           <span class="input-group-text">Plante*</span>
-          <select class="form-select" v-model="annonce.plantes" required>
+          <select class="form-select" v-model.lazy="annonce.plantes" required>
             <option selected disabled value="">Choisissez une plante...</option>
-            <option v-for="plante in plantes" :key="plante.id" :value="plante">
+            <option v-for="plante in plantes" :key="plante.id">
               {{ plante }}
             </option>
           </select>
@@ -156,7 +156,7 @@
         aria-label="Close"
       ></button>
     </div>
-    <div class="card">
+    <!-- <div class="card">
       <div class="card-body">
         <h4 class="card-title">Rappel des informations</h4>
         <p class="mt-4 card-text fw-normal">
@@ -175,7 +175,7 @@
           <b>Plante :</b> {{ selectedPlant.nom }}
         </p>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -192,24 +192,9 @@ export default {
   },
   data() {
     return {
-      annonce: [
-        {
-          etat: "",
-          titre: "",
-          description: "",
-          numero: 0,
-          ville: "",
-          rue: "",
-          codePostal: "",
-          plantes: [],
-          utilisateurProp: "",
-          utilisateursPart: [],
-          commentaires: [],
-        },
-      ],
+      annonce: [],
       etats: ["Active", "Innactive"],
       plantes: [],
-      data: [],
     };
   },
   created() {
@@ -220,7 +205,7 @@ export default {
   },
   methods: {
     checkCP() {
-      const Reg = new RegExp(/^(([0-8][\d])|(9[0-5]))[\d]{3}$/);
+      const Reg = new RegExp(/^\d{5}$/);
       if (!Reg.test(document.getElementById("cp").value))
         swal(
           "Erreur de syntaxe !",
@@ -229,6 +214,7 @@ export default {
         );
     },
     submitAnnonce: async function () {
+      console.log(this.annonce);
       try {
         await axios.post("https://localhost:80/annonces", this.annonce);
       } catch (error) {
