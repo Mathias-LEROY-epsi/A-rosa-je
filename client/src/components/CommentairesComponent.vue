@@ -62,7 +62,7 @@ export default {
       try {
         await axios
           .get(
-            `http://localhost:80/utilisateurs_from_pseudo?page=1&pseudo=${pseudo.value}`
+            `https://localhost:80/utilisateurs_from_pseudo?page=1&pseudo=${pseudo.value}`
           )
           .then(swal("Good job!", "You clicked the button!", "success"));
       } catch (error) {
@@ -75,12 +75,12 @@ export default {
       try {
         await axios
           .get(
-            `http://localhost:80/utilisateurs_from_pseudo?page=1&pseudo=${pseudo.value}`
+            `https://localhost:80/utilisateurs_from_pseudo?page=1&pseudo=${pseudo.value}`
           )
           .then((res) => {
             console.log(res.data["hydra:member"][0].id);
             axios
-              .post("http://localhost:80/commentaires", {
+              .post("https://localhost:80/commentaires", {
                 message: commentaire.value,
                 annonce: `/annonces/1`,
                 utilisateur: `/utilisateurs/${pseudo.value}`,

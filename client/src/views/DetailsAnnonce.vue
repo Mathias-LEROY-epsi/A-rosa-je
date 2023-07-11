@@ -137,7 +137,7 @@ export default {
     fetchAnnonce: async function () {
       try {
         await axios
-          .get("http://localhost:80/annonces/" + lastParam)
+          .get("https://localhost:80/annonces/" + lastParam)
           .then((res) => {
             console.log(res.data);
             this.annonce = res.data;
@@ -161,10 +161,12 @@ export default {
     fetchComments: async function () {
       for (const commentaire of this.commentaires) {
         try {
-          const response = await axios.get("http://localhost:80" + commentaire);
+          const response = await axios.get(
+            "https://localhost:80" + commentaire
+          );
           const commentaireDetails = response.data;
           const utilisateurResponse = await axios.get(
-            "http://localhost:80" + commentaireDetails.utilisateur
+            "https://localhost:80" + commentaireDetails.utilisateur
           );
           commentaireDetails.utilisateurDetails = utilisateurResponse.data;
           this.commentairesDetails.push(commentaireDetails);
@@ -184,7 +186,7 @@ export default {
         console.log(this.pseudo);
         await axios
           .get(
-            `http://localhost:80/utilisateurs_from_pseudo?page=1&pseudo=${this.pseudo}`
+            `https://localhost:80/utilisateurs_from_pseudo?page=1&pseudo=${this.pseudo}`
           )
           .then((res) => {
             console.log(res.data);
@@ -194,7 +196,7 @@ export default {
           .then(() => {
             console.log(this.commentairesDetail);
             axios
-              .post("http://localhost:80/commentaires", {
+              .post("https://localhost:80/commentaires", {
                 message: `${this.commentairesDetail}`,
                 annonce: `/annonces/${this.annonce.id}`,
                 utilisateur: `/utilisateurs/${this.utilisateur}`,

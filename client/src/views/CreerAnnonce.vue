@@ -230,7 +230,7 @@ export default {
     },
     submitAnnonce: async function () {
       try {
-        await axios.post("http://localhost:80/annonces", this.annonce);
+        await axios.post("https://localhost:80/annonces", this.annonce);
       } catch (error) {
         swal(
           "Veuillez nous excuser...",
@@ -242,7 +242,7 @@ export default {
     },
     fetchPlantes: async function () {
       try {
-        await axios.get("http://localhost:80/plantes?page=1").then((res) => {
+        await axios.get("https://localhost:80/plantes?page=1").then((res) => {
           this.plantes = new Set(
             res.data["hydra:member"].map((plante) => plante.nom)
           );
