@@ -200,6 +200,9 @@ export default {
                 utilisateur: `/utilisateurs/${this.utilisateur}`,
               })
               .then(swal("Bien joué!", "message envoyé!", "success"))
+              .then(() => {
+                this.fetchComments();
+              })
               .catch((err) => {
                 console.log(err);
               });
@@ -208,8 +211,6 @@ export default {
         swal("Surnom inconnu...", "Veuillez choisir un surnom valide", "error");
         console.log(error);
       }
-
-      this.commentaire.value = "";
     },
   },
 };
