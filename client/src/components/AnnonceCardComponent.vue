@@ -21,15 +21,7 @@
 export default {
   name: "AnnonceCardComponent",
   props: {
-    annonce: null,
-    annonce_id: null,
-  },
-  computed: {
-    id() {
-      console.log(this.annonce);
-      //this.annonce_id = annonce["@id"];
-      return this.annonce_id;
-    },
+    annonce: [],
   },
 };
 </script>

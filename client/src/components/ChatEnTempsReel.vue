@@ -65,17 +65,17 @@ export default {
           `https://localhost/utilisateurs_from_pseudo?page=1&pseudo=${username.value}`
         )
         .then((res) => {
-          console.log(res.data["hydra:member"][0].id);
+          // console.log(res.data["hydra:member"][0].id);
           axios
             .post("https://localhost/messages", {
               message: message.value,
               user: `/utilisateurs/${res.data["hydra:member"][0].id}`,
             })
             .then((res) => {
-              console.log(res);
+              // console.log(res);
             })
             .catch((err) => {
-              console.log(err);
+              // console.log(err);
             });
         });
 

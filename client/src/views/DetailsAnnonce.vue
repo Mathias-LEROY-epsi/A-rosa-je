@@ -106,8 +106,6 @@ import swal from "sweetalert";
 
 const url = window.location.href;
 const lastParam = url.split("/").slice(-1)[0];
-console.log(url);
-console.log(lastParam);
 
 export default {
   name: "DetailsAnnonce",
@@ -118,9 +116,12 @@ export default {
     return {
       annonce: {},
       utilisateur: {},
+      utilisateursPartOld: [],
+      utilisateursPart: [],
       plantes: [],
       commentaires: [],
       commentairesDetails: [],
+      commentairesDetail: "",
       pseudo: ref(""),
       commentaire: ref(""),
     };
@@ -139,15 +140,11 @@ export default {
         await axios
           .get("https://localhost/annonces/" + lastParam)
           .then((res) => {
-            console.log(res.data);
             this.annonce = res.data;
-            console.log(this.annonce);
-
             this.plantes = res.data.plantes;
-            console.log(this.plantes);
-
             this.commentaires = res.data.commentaires;
             console.log(this.commentaires);
+            this.utilisateursPartOld = res.data.utilisateursPart;
           });
       } catch (error) {
         swal(
@@ -155,7 +152,26 @@ export default {
           "Une erreur est survenue de notre côté",
           "error"
         );
-        console.log(error);
+      }
+    },
+    putUtilisateurPartOfAnnonce: async function () {
+      try {
+        this.utilisateursPartOld.push(`/utilisateur/${this.utilisateur}`);
+        this.utilisateursPart = new Set(this.utilisateursPartOld);
+        await axios
+          .patch("https://localhost/annonces/" + lastParam, {
+            utilisateursPart: [this.utilisateursPart],
+          })
+          .then(() => {
+            this.fetchAnnonce();
+            console.log(this.annonce);
+          });
+      } catch (error) {
+        swal(
+          "Veuillez nous excuser...",
+          "Une erreur est survenue de notre côté",
+          "error"
+        );
       }
     },
     fetchComments: async function () {
@@ -175,24 +191,20 @@ export default {
             "Une erreur est survenue de notre côté",
             "error"
           );
-          console.log(error);
         }
       }
     },
     submit: async function () {
       try {
-        console.log(this.pseudo);
         await axios
           .get(
             `https://localhost/utilisateurs_from_pseudo?page=1&pseudo=${this.pseudo}`
           )
           .then((res) => {
-            console.log(res.data);
             this.utilisateur = res.data;
-            console.log(this.utilisateur);
+            this.putUtilisateurPartOfAnnonce();
           })
           .then(() => {
-            console.log(this.commentairesDetail);
             axios
               .post("https://localhost/commentaires", {
                 message: `${this.commentairesDetail}`,
@@ -202,15 +214,19 @@ export default {
               .then(swal("Bien joué!", "message envoyé!", "success"))
               .then(() => {
                 this.commentaires = [];
-                window.location.reload();
+                this.fetchAnnonce();
+                this.fetchComments();
               })
-              .catch((err) => {
-                console.log(err);
+              .catch(() => {
+                swal(
+                  "Veuillez nous excuser...",
+                  "Une erreur est survenue de notre côté",
+                  "error"
+                );
               });
           });
       } catch (error) {
         swal("Surnom inconnu...", "Veuillez choisir un surnom valide", "error");
-        console.log(error);
       }
     },
   },

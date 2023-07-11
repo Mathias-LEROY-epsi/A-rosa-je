@@ -82,8 +82,6 @@ import swal from "sweetalert";
 
 const url = window.location.href;
 const lastParam = url.split("/").slice(-1)[0];
-console.log(url);
-console.log(lastParam);
 
 export default {
   name: "DetailsPlante",
@@ -105,7 +103,6 @@ export default {
           .get(`https://localhost/plantes/${lastParam}`)
           .then((res) => {
             this.plante = res.data;
-            console.log(this.plante);
           });
       } catch (error) {
         swal(
@@ -113,7 +110,6 @@ export default {
           "Une erreur est survenue de notre côté",
           "error"
         );
-        console.log(error);
       }
     },
   },

@@ -36,9 +36,7 @@ export default {
       try {
         await axios.get("https://localhost/annonces?page=1").then((res) => {
           res.data["hydra:member"].forEach((annonce) => {
-            console.log(annonce);
             this.annonces.push(annonce);
-            console.log(this.annonces);
           });
         });
       } catch (error) {

@@ -214,7 +214,6 @@ export default {
         );
     },
     submitAnnonce: async function () {
-      console.log(this.annonce);
       try {
         await axios.post("https://localhost/annonces", {
           etat: this.annonce.etat,
@@ -244,7 +243,6 @@ export default {
           this.plantes = new Set(
             res.data["hydra:member"].map((plante) => plante.nom)
           );
-          console.log(this.plantes);
         });
       } catch (error) {
         swal(
