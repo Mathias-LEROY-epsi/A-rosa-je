@@ -201,6 +201,7 @@ export default {
               })
               .then(swal("Bien joué!", "message envoyé!", "success"))
               .then(() => {
+                this.commentaires = [];
                 window.location.reload();
               })
               .catch((err) => {
