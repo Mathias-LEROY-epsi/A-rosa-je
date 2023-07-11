@@ -102,7 +102,7 @@ export default {
     fetchPlante: async function () {
       try {
         await axios
-          .get(`https://localhost:80/plantes/${lastParam}`)
+          .get(`https://localhost/plantes/${lastParam}`)
           .then((res) => {
             this.plante = res.data;
             console.log(this.plante);

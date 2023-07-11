@@ -16,5 +16,4 @@ RUN mkdir /etc/nginx/ssl
 COPY nginx/certificate.crt /etc/nginx/ssl/certificate.crt
 COPY nginx/private.key /etc/nginx/ssl/private.key
 
-EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

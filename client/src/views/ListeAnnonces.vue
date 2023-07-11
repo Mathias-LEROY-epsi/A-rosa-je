@@ -34,7 +34,7 @@ export default {
   methods: {
     async fetchAnnonces() {
       try {
-        await axios.get("https://localhost:80/annonces?page=1").then((res) => {
+        await axios.get("https://localhost/annonces?page=1").then((res) => {
           res.data["hydra:member"].forEach((annonce) => {
             console.log(annonce);
             this.annonces.push(annonce);

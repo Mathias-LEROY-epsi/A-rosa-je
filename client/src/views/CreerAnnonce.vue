@@ -192,7 +192,7 @@ export default {
   },
   data() {
     return {
-      annonce: [],
+      annonce: {},
       etats: ["Active", "Innactive"],
       plantes: [],
     };
@@ -216,7 +216,19 @@ export default {
     submitAnnonce: async function () {
       console.log(this.annonce);
       try {
-        await axios.post("https://localhost:80/annonces", this.annonce);
+        await axios.post("https://localhost/annonces", {
+          etat: this.annonce.etat,
+          titre: this.annonce.titre,
+          description: this.annonce.description,
+          numero: this.annonce.numero,
+          rue: this.annonce.rue,
+          codePostal: this.annonce.codePostal,
+          ville: this.annonce.ville,
+          plantes: this.annonce.plantes,
+          utilisateurProp: "/utilisateurs/1",
+          utilisateurPart: [],
+          commentaires: [],
+        });
       } catch (error) {
         swal(
           "Veuillez nous excuser...",
@@ -228,7 +240,7 @@ export default {
     },
     fetchPlantes: async function () {
       try {
-        await axios.get("https://localhost:80/plantes?page=1").then((res) => {
+        await axios.get("https://localhost/plantes?page=1").then((res) => {
           this.plantes = new Set(
             res.data["hydra:member"].map((plante) => plante.nom)
           );
