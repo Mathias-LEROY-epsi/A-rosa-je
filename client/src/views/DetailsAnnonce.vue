@@ -201,8 +201,7 @@ export default {
               })
               .then(swal("Bien joué!", "message envoyé!", "success"))
               .then(() => {
-                this.fetchAnnonce();
-                this.fetchComments();
+                window.location.reload();
               })
               .catch((err) => {
                 console.log(err);
