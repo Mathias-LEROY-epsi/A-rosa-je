@@ -159,9 +159,17 @@ export default {
         this.utilisateursPartOld.push(`/utilisateurs/${this.utilisateur}`);
         this.utilisateursPart = new Set(this.utilisateursPartOld);
         await axios
-          .patch("https://localhost/annonces/" + lastParam, {
-            utilisateursPart: [this.utilisateursPart],
-          })
+          .patch(
+            "https://localhost/annonces/" + lastParam,
+            {
+              utilisateursPart: [this.utilisateursPart],
+            },
+            {
+              headers: {
+                "Content-Type": "application/merge-patch+json",
+              },
+            }
+          )
           .then(() => {
             this.fetchAnnonce();
             console.log(this.annonce);
