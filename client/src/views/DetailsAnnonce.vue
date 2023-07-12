@@ -154,9 +154,9 @@ export default {
         );
       }
     },
-    putUtilisateurPartOfAnnonce: async function () {
+    patchUtilisateurPartOfAnnonce: async function () {
       try {
-        this.utilisateursPartOld.push(`/utilisateur/${this.utilisateur}`);
+        this.utilisateursPartOld.push(`/utilisateurs/${this.utilisateur}`);
         this.utilisateursPart = new Set(this.utilisateursPartOld);
         await axios
           .patch("https://localhost/annonces/" + lastParam, {
@@ -202,7 +202,7 @@ export default {
           )
           .then((res) => {
             this.utilisateur = res.data;
-            this.putUtilisateurPartOfAnnonce();
+            this.patchUtilisateurPartOfAnnonce();
           })
           .then(() => {
             axios
