@@ -1,5 +1,5 @@
 # Étape 1 : Builder l'application Vue.js
-FROM node:lts-alpine as builder
+FROM node:lts-alpine AS builder
 WORKDIR /app
 COPY client/package*.json ./
 RUN npm install
@@ -16,5 +16,4 @@ RUN mkdir /etc/nginx/ssl
 COPY nginx/certificate.crt /etc/nginx/ssl/certificate.crt
 COPY nginx/private.key /etc/nginx/ssl/private.key
 
-EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

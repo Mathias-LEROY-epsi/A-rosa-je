@@ -3,6 +3,7 @@
     <div class="container-fluid navbar-brand mx-4">
       <img
         src="./assets/img/Logo.png"
+        alt="logo"
         width="75"
         height="50"
         id="logo"
@@ -21,15 +22,25 @@
         </button>
       </div>
     </div>
-    <div class="collapse navbar-collapse me-4" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <div
+      class="collapse navbar-collapse w-75 justify-content-end me-4"
+      id="navbarSupportedContent"
+    >
+      <ul class="navbar-nav d-flex align-items-center">
         <img src="./assets/img/Fleur.png" height="50" id="fleur" alt="fleur" />
         <li class="nav-item">
-          <router-link class="nav-link" to="/">Home</router-link>
+          <router-link class="nav-link" to="/">Accueil</router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" to="/creer">Créer</router-link>
+          <router-link class="nav-link" to="/nouvelle-annonce"
+            >Nouvelle annonce</router-link
+          >
         </li>
+        <!-- <li class="nav-item">
+          <router-link class="nav-link" to="/new-chat">
+            Conversation
+          </router-link>
+        </li> -->
       </ul>
     </div>
   </nav>
@@ -37,6 +48,11 @@
 </template>
 
 <style>
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
 #app {
   font-family: var(--font-family);
   -webkit-font-smoothing: antialiased;
@@ -47,7 +63,7 @@
 
 nav {
   background-color: var(--color-primary);
-  border-color: var(--color-shade1);
+  border-color: var(--color-shade);
 }
 
 .nav-link {

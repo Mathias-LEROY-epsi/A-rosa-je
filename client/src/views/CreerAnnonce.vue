@@ -1,10 +1,10 @@
 <template>
   <h1>Création d'une annonce</h1>
-  <div v-if="!data.length">
+  <div v-if="!annonce.length">
     <div class="d-flex flex-column align-items-center">
       <!-- Trouver comment revenir sur cette page sans avoir à réactualiser la page quand on a soumis le formulaire -->
       <form
-        class="row g-3 justify-content-center container text-center mt-2"
+        class="row g-3 justify-content-center align-items-stretch container text-left mt-2"
         v-on:submit.prevent="submitAnnonce"
         method="POST"
       >
@@ -15,7 +15,7 @@
             <input
               type="text"
               class="form-control"
-              v-model="annonce.titre"
+              v-model.lazy="annonce.titre"
               maxlength="90"
               placeholder="Garde d'un rosier en pot"
               required
@@ -24,16 +24,26 @@
           </div>
         </div>
 
-        <div class="col-md-10">
+        <!-- <div class="col-md-10">
           <input class="form-control" type="file" id="formFile" />
-        </div>
+        </div> -->
 
-        <div class="col-md-10">
+        <!-- <div class="col-md-10">
           <label>Prendre une photo :</label>
           <CameraComponent
             class="border-primary p-2 w-100"
             :items="annonce.items"
           ></CameraComponent>
+        </div> -->
+        <div class="mt-5 col-md-10">
+          <span class="input-group-text">Etat de l'annonce*</span>
+          <select class="form-select" v-model.lazy="annonce.etat" required>
+            <option selected disabled value="">Choisissez un état...</option>
+            <option v-for="etat in etats" :key="etat">
+              {{ etat }}
+            </option>
+          </select>
+          <div class="invalid-feedback">L'annonce doit posséder un état</div>
         </div>
 
         <div class="mt-5 col-md-10">
@@ -41,7 +51,7 @@
             <span class="input-group-text">Description*</span>
             <textarea
               class="form-control"
-              v-model="annonce.description"
+              v-model.lazy="annonce.description"
               rows="8"
               placeholder="A arroser 2 à 3 fois par semaine"
               required
@@ -50,13 +60,13 @@
           </div>
         </div>
 
-        <div class="mt-5 col-md-3" id="numero">
+        <div class="mt-5 col-md-10" id="numero">
           <div class="input-group has-validation">
             <span class="input-group-text">Numéro de rue/voie*</span>
             <input
               type="number"
               class="form-control"
-              v-model="annonce.adresse.numero"
+              v-model.lazy="annonce.numero"
               placeholder="1"
               min="1"
               max="999"
@@ -66,13 +76,13 @@
           </div>
         </div>
 
-        <div class="mt-5 col-md-7" id="voie">
+        <div class="mt-5 col-md-10" id="voie">
           <div class="input-group has-validation">
             <span class="input-group-text">Rue/Voie*</span>
             <input
               type="text"
               class="form-control"
-              v-model="annonce.adresse.rue"
+              v-model.lazy="annonce.rue"
               maxlength="90"
               placeholder="rue de la rose"
               required
@@ -81,13 +91,13 @@
           </div>
         </div>
 
-        <div class="mt-5 col-md-3" id="cp">
+        <div class="mt-5 col-md-10" id="cp">
           <div class="input-group has-validation">
             <span class="input-group-text">Code postal*</span>
             <input
               type="number"
               class="form-control"
-              v-model="annonce.adresse.codePostal"
+              v-model.lazy="annonce.codePostal"
               v-on:change="checkCP"
               id="cp"
               placeholder="44000"
@@ -98,13 +108,13 @@
           </div>
         </div>
 
-        <div class="mt-5 col-md-7" id="ville">
+        <div class="mt-5 col-md-10" id="ville">
           <div class="input-group has-validation">
             <span class="input-group-text">Ville*</span>
             <input
               type="text"
               class="form-control"
-              v-model="annonce.adresse.ville"
+              v-model.lazy="annonce.ville"
               maxlength="90"
               placeholder="Nantes"
               onkeydown="return /[a-z]/i.test(event.key)"
@@ -115,26 +125,20 @@
           </div>
         </div>
 
-        <div class="mt-5 col-md-5">
+        <div class="mt-5 col-md-10">
           <span class="input-group-text">Plante*</span>
-          <select
-            class="form-select"
-            v-model="selectedPlant"
-            placeholder="jkfdljgkl"
-            required
-          >
+          <select class="form-select" v-model.lazy="annonce.plantes" required>
             <option selected disabled value="">Choisissez une plante...</option>
-            <option v-for="plante in plantes" :key="plante.id" :value="plante">
-              {{ plante.nom }}
+            <option v-for="plante in plantes" :key="plante.id">
+              {{ plante }}
             </option>
           </select>
           <div class="invalid-feedback">Veuillez sélectionner une plante</div>
         </div>
 
-        <div class="mt-5 mb-5">
+        <div class="mt-5 mb-10">
           <button class="btn btn-danger me-5" type="reset">Annuler</button>
           <button class="btn btn-success" type="submit">Valider</button>
-          <!--@click.prevent="submitAnnonce"-->
         </div>
       </form>
     </div>
@@ -152,7 +156,7 @@
         aria-label="Close"
       ></button>
     </div>
-    <div class="card">
+    <!-- <div class="card">
       <div class="card-body">
         <h4 class="card-title">Rappel des informations</h4>
         <p class="mt-4 card-text fw-normal">
@@ -162,15 +166,16 @@
           <b>Description de l'annonce :</b> {{ data[0].description }}
         </p>
         <p class="mt-4 card-text fw-normal">
-          <b>Adresse :</b> {{ data[0].adresse.numero }}
-          {{ data[0].adresse.rue }} {{ data[0].adresse.codePostal }}
-          {{ data[0].adresse.ville }}
+          <b>Adresse :</b> {{ data[0].numero }}
+          {{ data[0].rue }}
+          {{ data[0].codePostal }}
+          {{ data[0].ville }}
         </p>
         <p class="mt-4 card-text fw-normal">
           <b>Plante :</b> {{ selectedPlant.nom }}
         </p>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -178,36 +183,29 @@
 import axios from "axios";
 import swal from "sweetalert";
 
-import CameraComponent from "../components/CameraComponent.vue";
+//import CameraComponent from "../components/CameraComponent.vue";
 
 export default {
   name: "CreerAnnonce",
   components: {
-    CameraComponent,
+    //CameraComponent,
   },
   data() {
     return {
-      annonce: {
-        titre: null,
-        description: null,
-        adresse: {
-          numero: null,
-          rue: null,
-          codePostal: null,
-          ville: null,
-        },
-      },
+      annonce: {},
+      etats: ["Active", "Innactive"],
       plantes: [],
-      selectedPlant: null,
-      data: [],
     };
   },
   created() {
     this.fetchPlantes();
   },
+  mounted() {
+    this.fetchPlantes();
+  },
   methods: {
     checkCP() {
-      var Reg = new RegExp(/^(([0-8][0-9])|(9[0-5]))[0-9]{3}$/);
+      const Reg = new RegExp(/^\d{5}$/);
       if (!Reg.test(document.getElementById("cp").value))
         swal(
           "Erreur de syntaxe !",
@@ -215,34 +213,21 @@ export default {
           "error"
         );
     },
-    async submitAnnonce() {
+    submitAnnonce: async function () {
       try {
-        const response = await axios.post(
-          "http://localhost:8080/annonces",
-          this.annonce,
-          {
-            auth: {
-              username: "admin",
-              password: "password",
-            },
-          }
-        );
-        if (this.selectedPlant !== null) {
-          await axios.put(
-            response.data._links.self.href + "/plantes",
-            this.selectedPlant._links.self.href,
-            {
-              headers: {
-                "Content-Type": "text/uri-list",
-              },
-              auth: {
-                username: "admin",
-                password: "password",
-              },
-            }
-          );
-        }
-        this.data.push(response.data);
+        await axios.post("https://localhost/annonces", {
+          etat: this.annonce.etat,
+          titre: this.annonce.titre,
+          description: this.annonce.description,
+          numero: this.annonce.numero,
+          rue: this.annonce.rue,
+          codePostal: this.annonce.codePostal,
+          ville: this.annonce.ville,
+          plantes: this.annonce.plantes,
+          utilisateurProp: "/utilisateurs/1",
+          utilisateurPart: [],
+          commentaires: [],
+        });
       } catch (error) {
         swal(
           "Veuillez nous excuser...",
@@ -252,20 +237,13 @@ export default {
         console.error(error);
       }
     },
-    async fetchPlantes() {
+    fetchPlantes: async function () {
       try {
-        const response = await axios.get("http://localhost:8080/plantes", {
-          auth: {
-            username: "admin",
-            password: "password",
-          },
+        await axios.get("https://localhost/plantes?page=1").then((res) => {
+          this.plantes = new Set(
+            res.data["hydra:member"].map((plante) => plante.nom)
+          );
         });
-        if (
-          response.data._embedded.plantes !== null ||
-          !response.data._embedded.plantes.length
-        ) {
-          this.plantes = response.data._embedded.plantes;
-        }
       } catch (error) {
         swal(
           "Veuillez nous excuser...",

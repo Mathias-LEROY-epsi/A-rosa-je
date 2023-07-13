@@ -6,10 +6,10 @@ This project is a full-stack web application that aims to provide a platform for
 
 ## Technologies Used
 
--   [Vue.js](https://vuejs.org/): A progressive JavaScript framework for building user interfaces.
--   [Java JPA](https://en.wikipedia.org/wiki/Java_Persistence_API): A Java API for object-relational mapping.
--   [MariaDB](https://mariadb.org/): An open-source relational database management system.
--   [Docker](https://www.docker.com/): A platform for building, shipping, and running applications in containers.
+- [Vue.js](https://vuejs.org/): A progressive JavaScript framework for building user interfaces.
+- [Java JPA](https://en.wikipedia.org/wiki/Java_Persistence_API): A Java API for object-relational mapping.
+- [MariaDB](https://mariadb.org/): An open-source relational database management system.
+- [Docker](https://www.docker.com/): A platform for building, shipping, and running applications in containers.
 
 ## Project Setup
 
@@ -17,24 +17,23 @@ To set up and run the A-Rosa-Je project, you will need to have [Docker](https://
 
 1.  Clone the repository:
 
-
-`https://github.com/Lucile16/A-rosa-je.git` 
+`https://github.com/Lucile16/A-rosa-je.git`
 
 2.  Navigate to the project directory:
 
-`cd A-Rosa-Je` 
+`cd A-Rosa-Je`
 
 3.  Build the Docker containers:
 
-`docker-compose build` 
+`docker-compose build`
 
 4.  Start the Docker containers:
 
-`docker-compose up` 
+`docker-compose up`
 
-5.  Access the application in your browser at `http://localhost:8080`.
+5.  Access the application in your browser at `https://localhost:8080`.
 
-6. (Optional) Populate the database with test data by launching the populate_db.sh script
+6.  (Optional) Populate the database with test data by launching the populate_db.sh script
 
 ## Conclusion
 
